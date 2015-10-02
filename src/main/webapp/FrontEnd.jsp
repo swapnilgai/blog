@@ -19,9 +19,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link href="${pageContext.request.contextPath}/bootstrap/css/sign.css" rel="stylesheet">
 
 <script>
-
-
-
+/* 
+$("#Homenav").click(function(){
+alert("hi");	
+});
+ */
 $(document).ready(function() {
 	
 	var session = $("#session").val();
@@ -132,7 +134,8 @@ function Reset() {
         <div id="navbar" class="collapse navbar-collapse">
 	        <a class="navbar-brand" href="${pageContext.request.contextPath}/FrontEnd.jsp">CS 476 BLOG</a>
 	          <ul class="nav navbar-nav">
-	            <li id="Home" class="active"><a href="${pageContext.request.contextPath}/Home.jsp">Home</a></li>
+	            <li class="active"><a id="Homenav" href="">Home</a></li>
+	            <!-- ${pageContext.request.contextPath}/Home.jsp -->
 	            <li><a href="/Blog/SignOut">About</a></li>
 	          </ul>
         </div>
@@ -168,7 +171,7 @@ function Reset() {
 			   <div id="post" class="post">
 			   </div> 
 			   
-			   <div class="page">
+			<!--    <div class="page">
 					<ul class="pager">
 					<li class="previous disabled">
 					<a href="#">Newer Posts</a>
@@ -177,7 +180,7 @@ function Reset() {
 					<a href="#">Older Posts</a>
 					</li>
 					</ul>
-				</div>
+				</div> -->
 				
 		   </div>
 		</div>

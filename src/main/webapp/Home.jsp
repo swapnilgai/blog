@@ -19,9 +19,14 @@ import="com.google.gson.JsonArray"
 <link href="${pageContext.request.contextPath}/bootstrap/css/sign.css" rel="stylesheet">
 
 <script>
+	
 $(document).ready(function() {
 
-	
+	var session = $("#session").val();
+	if(session == "notSet"){
+		alert("Please Sign in first");	
+		window.location.href= "FrontEnd.jsp";
+	}
 	
 	$.ajax({
 		type: "POST",
@@ -96,6 +101,10 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
-
+<% if (session.getAttribute("UserName") == null) { %>
+	    <input type="hidden" id="session" value="notSet"/>
+	<% } else {%>
+	     <input type="hidden" id="session" value="<%=session.getAttribute("UserName") %>"/>
+	<% } %>
 </body>
 </html>

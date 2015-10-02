@@ -49,6 +49,9 @@ function DeletePost(){
 $(document).ready(function() {
 	
 	var session = $("#session").val();
+	if(session == "notSet"){
+		 $("#signout").hide();
+	}
 	
 	var url = window.location.href;
 	var pathSplit = window.location.pathname.split( '/' )
@@ -118,11 +121,10 @@ $(document).ready(function() {
 <nav class="navbar navbar-inverse" role="navigation">
         <div id="navbar" class="collapse navbar-collapse">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/FrontEnd.jsp">CS 476 BLOG</a>
-          <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav">
             <li class="active"><a href="${pageContext.request.contextPath}/Home.jsp">Home</a></li>
-           <li><a href="/Blog/SignOut">Signout</a></li>
-          
-          </ul>
+         	<li><a id="signout" href="/Blog/SignOut">Signout</a></li>
+         </ul> 
         </div>
     	
 </nav>
