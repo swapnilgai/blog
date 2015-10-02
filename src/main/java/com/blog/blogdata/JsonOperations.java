@@ -20,6 +20,7 @@ public class JsonOperations {
         int postId;
 		
 		String key = ""+it.next(); // get key
+		System.out.println("key : "+key);
 		postId=Integer.parseInt(""+jObj.get(key));
 		    
 		System.out.println("JSon blogT : "+postId);

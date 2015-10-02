@@ -24,20 +24,14 @@ public class InsertData {
 	
 	public String insertUserProfileData(SignUpPojo signup)
 	{
-		//if(userCred.put(signup.userName, signup.password)!=null)
-			
 			if(DataBase.userData.put(signup.getUserName(), signup)!=null)
 				  return "Success";
 				
-		return "Fail";
-		
+		return "Fail";	
 	}
-	
 	
 	public String insertBlog(HttpSession seassion, JSONObject jObj)
 	{
-		
-		
 		BlogPojo blogpojo = parseJsonReturnBlogData(jObj, seassion);
 		blogpojo.setUserName(database.season.get(seassion)); 
 		
@@ -54,7 +48,6 @@ public class InsertData {
 		// TODO Auto-generated method stub
 		
 		java.util.Iterator it = jObj.keys(); //gets all the keys	
-        
 		String blogText = null;
 		String date = null;
 		String postTitle = null;

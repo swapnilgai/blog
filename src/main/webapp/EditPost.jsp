@@ -24,8 +24,6 @@ $(document).ready(function() {
 	
 	formData = {}
 	formData ["postId"] = postId;
-	formData["Post"] = Post;
-	formData["Title"] = Title;
 	
 	jsonObject = [];
 	jsonObject.push(formData);
@@ -54,6 +52,8 @@ $(document).ready(function() {
     
 	$("button#save").click(function(){
 	
+		alert("Hi");
+		
 		var Title = $("#Title").val();
 	    var Post = $("#Post").val();
 	    
@@ -75,7 +75,7 @@ $(document).ready(function() {
 	  
 	     $.ajax({
 	    	 	type: "POST",
-				url: "/Blog/BlogInsert",
+				url: "/Blog/Update",
 				dataType: 'json',
 				async: false,
 		    	data: {jsonObject : JSON.stringify(jsonObject)},

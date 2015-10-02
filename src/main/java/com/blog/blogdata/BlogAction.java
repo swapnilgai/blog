@@ -17,8 +17,6 @@ public class BlogAction {
 	DataBase database = new DataBase();
 	
 	
-	
-	
 	public JSONObject getUserBlogById(HttpServletRequest request)
 	{
 		JsonOperations jsonoperation = new JsonOperations();
@@ -29,8 +27,6 @@ public class BlogAction {
 		
 		return retrive.getUserBlogByID(request.getSession(), postId);
 	}
-
-	
 	
 	public String insertNewBlog(HttpServletRequest request)
 	{
@@ -66,5 +62,13 @@ public class BlogAction {
 	        int postId= jsonoperation.parseJsonByID(jObj);
 	        
 	        return deleteblog.DeleteBlogByID(""+DataBase.season.get(request.getSession()), postId);
+	   }
+	   
+	   public String UpdateBlog(HttpServletRequest request)
+	   {
+		    JsonOperations jsonoperation = new JsonOperations();
+	        com.blog.database.UpdateBlog updateblog = new    com.blog.database.UpdateBlog();
+	        JSONObject jObj= jsonoperation.formatObject(request.getParameter("jsonObject").toString());
+	        return  updateblog.UpdateBlogByID(jObj);
 	   }
 }
