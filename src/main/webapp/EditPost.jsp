@@ -24,6 +24,8 @@ $(document).ready(function() {
 	
 	formData = {}
 	formData ["postId"] = postId;
+	formData["Post"] = Post;
+	formData["Title"] = Title;
 	
 	jsonObject = [];
 	jsonObject.push(formData);
@@ -82,9 +84,9 @@ $(document).ready(function() {
                 },
 				success: function(js){
 					var json =  JSON.stringify(js["user"])
-					if(json = "success"){
-					 window.location= "/Blog/Home.jsp";
-				}
+					//if(json = "success"){
+					 //window.location= "/Blog/Home.jsp";
+					  //}
 					 return false;
 					//debugger;
 					

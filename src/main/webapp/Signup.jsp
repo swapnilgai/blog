@@ -24,7 +24,6 @@ $(document).ready(function() {
 		dataType: 'json',
 		async: false,
 		success: function(js){
-			//alert("success");
 			var blogs =  JSON.stringify(js["commonBlog"])
 			var jsonParsedBlog = $.parseJSON(blogs);
 			
@@ -60,7 +59,6 @@ $(document).ready(function() {
     	}
 	});
 	
-	//$("#datepicker").datepicker({dateFormat: "mm-dd-yy"});
 	  $( "#datepicker" ).datepicker({
       changeMonth: true,//this option for allowing user to select month
       changeYear: true //this option for allowing user to select from year range
@@ -178,33 +176,6 @@ $(document).ready(function() {
 		     </div>
 		</div>
 		
-		<div class="col-md-8 col-md-pull-4">
-			<div id ="main">
-			   <div id="post" class="post">
-			   
-			   <!--  <p class="date">
-					<span class="" data-refresh="0" 
-					data-format="format('LL')" data-timestamp="2015-08-09T18:58:46Z">August 9 2015</span>
-				 </p>
-				 
-				 <h1 class="post-title">
-					<a href="">Java Web!</a>
-				</h1>
-
-				<div class="posted">
-					Posted by
-					 <span class=""> 
-						<a href="">Shankar Tiwari</a>
-					 </span>
-				</div>	
-				 
-				 <div class="post_body">
-						<p>Some of you know that for the last few weeks  </p>
-					</div> --> 
-			   
-			   </div>
-		    </div>
-		</div>
     
     </div>
    </div>

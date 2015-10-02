@@ -20,10 +20,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script>
 
+
+
 $(document).ready(function() {
-	var session = $("#session").val();
 	
-	if(session != "notSet"){$("#f1").hide()}else{}
+	var session = $("#session").val();
+	if(session != "notSet"){
+		$("#f1").hide();
+	}
+	
 	
 	$.ajax({
 		type: "POST",
@@ -35,6 +40,7 @@ $(document).ready(function() {
 			var jsonParsedBlog = $.parseJSON(blogs);
 			
 			//http://stackoverflow.com/questions/8951810/how-to-parse-json-data-with-jquery-javascript
+			var postLength = jsonParsedBlog.length;
 			
 			for (var i = 0; i < jsonParsedBlog.length; i++) { 
 			     
@@ -55,12 +61,14 @@ $(document).ready(function() {
 			     $("#post").append('<br/>');
 		
 			}
-			
+						
 		 },
 		error: function(jqXHR, textStatus, errorMessage){
     		alert(errorMessage);
     	}
 	});
+	
+	
 	
 	$("button#Signin").click(function(){
 		 
@@ -121,14 +129,12 @@ function Reset() {
 
 <body>
 <nav class="navbar navbar-inverse" role="navigation">
-       
-        
         <div id="navbar" class="collapse navbar-collapse">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/FrontEnd.jsp">CS 476 BLOG</a>
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="${pageContext.request.contextPath}/Home.jsp">Home</a></li>
-            <li><a href="/Blog/SignOut">About</a></li>
-          </ul>
+	        <a class="navbar-brand" href="${pageContext.request.contextPath}/FrontEnd.jsp">CS 476 BLOG</a>
+	          <ul class="nav navbar-nav">
+	            <li id="Home" class="active"><a href="${pageContext.request.contextPath}/Home.jsp">Home</a></li>
+	            <li><a href="/Blog/SignOut">About</a></li>
+	          </ul>
         </div>
     	
 </nav>
@@ -161,6 +167,7 @@ function Reset() {
 			<div id ="main">
 			   <div id="post" class="post">
 			   </div> 
+			   
 			   <div class="page">
 					<ul class="pager">
 					<li class="previous disabled">
@@ -171,7 +178,8 @@ function Reset() {
 					</li>
 					</ul>
 				</div>
-		    </div>
+				
+		   </div>
 		</div>
 	</div>
 		
