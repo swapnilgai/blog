@@ -1,0 +1,28 @@
+/* /* <!--  HTML AND CSS Referenced from http://blog.miguelgrinberg.com/index  --> */
+#main .posted {
+    border-bottom: 1px solid #ccc;
+    font-size: 100%;
+    font-weight: normal;
+    margin-bottom: 16px;
+    padding-bottom: 4px;
+}
+
+.form-signin {
+  max-width: 230px;
+ 
+}
+	
+ .form-signin .form-control:focus {
+  z-index: 2;
+} 
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+} 
+
