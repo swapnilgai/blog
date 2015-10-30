@@ -1,59 +1,44 @@
 package com.blog.database;
 
-import java.util.Date;
-import java.util.HashMap;
-import javax.servlet.http.HttpSession;
-import com.blog.blogdata.BlogPojo;
-import com.blog.signup.SignUpPojo;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import javax.sql.DataSource;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 
 public class DataBase {
+	static DataBase database;
 
-	static public  int postId;
-	static HashMap<String, String> userCred = new HashMap<String, String>();
-	static public HashMap<HttpSession, String> season = new HashMap<HttpSession, String>();
-	static public HashMap<String, String>imageUrl = new HashMap<String, String>(); 
-	public static Multimap<String, BlogPojo>userBlog =ArrayListMultimap.create();
-	public static HashMap<String, String>timestampPostId = new HashMap<String, String>(); 
-	public static HashMap<String, SignUpPojo> userData = new HashMap<String, SignUpPojo>();
-
-	static Multimap<String, String>userTimestamp =ArrayListMultimap.create();
+	public int postId;
+	public DataSource dataSource;
+	public JdbcTemplate jdbcTemplate;
+	public ApplicationContext context;
 	
- static {
+	public DataBase() {
 		// TODO Auto-generated constructor stub
-		String str = "admin@yahoo.com";
-	
-	 for (int i = 0; i < 10; i++) {
-			Date date = new Date();
-			BlogPojo blogtemp = new BlogPojo("heloo blog text heloo blog textheloo blog text"
-					+ "heloo blog textheloo blog textheloo blog textheloo blog text"
-					+ "heloo blog textheloo blog textheloo blog textheloo blog textheloo blog text"
-					+ "heloo blog textheloo blog textheloo blog textheloo blog text"
-					+ "heloo blog textheloo blog textheloo blog textheloo blog text"
-					+ "heloo blog textheloo blog textheloo blog textheloo blog textheloo blog text"
-					+ "heloo blog text"+i, ""+date,
-					"postTitle"+i, str, postId);
-			userBlog.put(blogtemp.getDate(),blogtemp);
-			userTimestamp.put(str, blogtemp.getDate());
-			timestampPostId.put(""+postId, ""+date);
-			postId++;
-			userCred.put(str, "admin");
-			if(i>2)
-				str = str +i;
-			   
-			try {
-				Thread.sleep(700);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		this.context = new ClassPathXmlApplicationContext("beans.xml");
+		this.dataSource = (DataSource) context.getBean("dataSource");
+		this.jdbcTemplate = (JdbcTemplate) context.getBean("jdbcTemplate");
+				 
+		String sql = "CREATE TABLE IF NOT EXISTS SIGNUP"
+				+ "(username varchar(255) NOT NULL,pass varchar(255) NOT NULL,email varchar(255) PRIMARY KEY,"
+				+ "dob varchar(255),photourl varchar(255))";
+
+		jdbcTemplate.execute(sql);
+			
+		 sql = "CREATE TABLE IF NOT EXISTS BLOG "
+				+ "(blogtext varchar(255), date1 varchar(255),username varchar (255), email varchar (255),"
+				+ "postTitle varchar (255), postId int UNIQUE,FOREIGN KEY (email) REFERENCES SIGNUP (email) )";
+	 
+		jdbcTemplate.execute(sql);	
 	}
+
+	public static DataBase getInstance() {
+		if (database == null) {
+			database = new DataBase();
+		}
+		return database;
+	}
+
+	
 }
-
-
-
-
-
-

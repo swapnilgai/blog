@@ -1,6 +1,6 @@
 package com.blog.database;
 
-public class retriveProfile {
+public class RetriveProfile {
 
 	
 	

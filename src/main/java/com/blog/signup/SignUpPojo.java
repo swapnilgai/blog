@@ -9,13 +9,16 @@ public class SignUpPojo {
 	
 	public SignUpPojo(String userName, String password, String email, String bDate, String photoURl) {
 		// TODO Auto-generated constructor stub
-		
 		this.userName=userName;
-		 this.password=password;
+		this.password=password;
 		this.email=email;
 		this.bDate=bDate;
 		this.photoURl=photoURl;
 	}
+	
+	public SignUpPojo() {
+		// TODO Auto-generated constructor stub
+		}
 	
 	
 	public String getUserName() {

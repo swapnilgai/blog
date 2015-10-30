@@ -1,13 +1,15 @@
 package com.blog.blogdata;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import com.blog.database.DataBase;
 
 /**
  * Servlet implementation class DeleteBlog
@@ -15,35 +17,44 @@ import org.json.JSONObject;
 @WebServlet("/Delete")
 public class Delete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Delete() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	// public DataSource dataSource;
+	DataBase database = null;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	public Delete() {
+		super();
+		// TODO Auto-generated constructor stub
+		database = DataBase.getInstance();
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("blog by : "+request.getParameter("postId"));
-		BlogAction blogaction = new BlogAction();
-		if(blogaction.DeleteBlog(request)=="Success")
-		{	
+		doPost(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		ApplicationContext context = database.context;
+		BlogActionDAO blogaction = (BlogActionDAO) context.getBean("BlogActionDAO");
+
+		// BlogAction blogaction = new BlogAction();
+		if (blogaction.DeleteBlog(request) == "Success") {
 			response.setContentType("application/json");
-			response.getWriter().write("Success");	
+			response.getWriter().write("Success");
 		}
-		//response.sendError(500, "unable to update");
 	}
 }

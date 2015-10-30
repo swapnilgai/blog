@@ -1,17 +1,22 @@
 package com.blog.blogdata;
 
-import java.util.Date;
-
-
-
 public class BlogPojo {
 	
 	private String blogText;
 	private String date;
 	private String userName;
-	private String postTitle;
+	private String email;
+    private String postTitle;
 	private int postId;
 	
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 	public int getPostId() {
 		return postId;
@@ -53,12 +58,13 @@ public class BlogPojo {
 		this.date = date;
 	}
 		
-	public BlogPojo(String blogText, String date, String postTitle, String userName, int postId) {
+	public BlogPojo(String blogText, String date, String postTitle, String email, int postId, String userName) {
 		// TODO Auto-generated constructor stub
 		this.userName=userName;
 		this.blogText=blogText;
 		this.date= date;
 		this.postTitle=postTitle;
 		this.postId=postId;
+		this.email = email;
 	}	
 }

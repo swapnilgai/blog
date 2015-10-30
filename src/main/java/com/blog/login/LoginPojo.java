@@ -9,7 +9,6 @@ public class LoginPojo {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
 	public LoginPojo(String userName, String password)
 	{
 		this.userName=userName;
