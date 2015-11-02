@@ -46,7 +46,8 @@ public class BlogRetriveCommon extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		 ApplicationContext context = database.context;
+		System.out.println("innnnnn nnnnn nnnnnnnnnn nn  nn n "); 
+		ApplicationContext context = database.context;
 		 BlogActionDAO blogaction = (BlogActionDAO) context.getBean("BlogActionDAO"); 
 		
 		//BlogAction blogaction = new BlogAction();

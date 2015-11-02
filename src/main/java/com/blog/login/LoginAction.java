@@ -15,7 +15,7 @@ public class LoginAction extends JdbcDaoSupport implements LoginActionDAO {
 		ValidateUser  validateuser =  new ValidateUser(); 
 		String userName = validateuser.validate(loginpojo);
 		
-		if(userName!=null)
+		if(userName!="Fail")
 		{
 			CheckSeasion checkSeasion = new CheckSeasion();
 			return checkSeasion.validateSeassion(loginpojo, request.getSession(), userName);

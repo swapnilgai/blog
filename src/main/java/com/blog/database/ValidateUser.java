@@ -19,22 +19,24 @@ DataBase database;
 		System.out.println(sql);
 		
 		List<Map<String,Object>> list = database.jdbcTemplate.queryForList(sql);
-	 String userName = null;
+		String userName = null;
 	        
 	      for(Map<String, Object> usern : list)
-	   		   userName=(String) usern.get("username");
-	   	  		
-		System.out.println("name  :  "+userName);
-		
+	      { 
+	    	  userName=(String) usern.get("username");
+	      	  System.out.println("name  :  "+userName);
+	      }
 		if(userName!=null){
-			System.out.println("dhbsfhbsdfbhdsbfjsdbf");
+			
 		    return userName;	
 		}
+		else 
+			return "Fail";
+
 		}catch(Exception E)
 		{
 			return "Fail";
 		}
-		return "Fail";
 	}	  
 }
 	
