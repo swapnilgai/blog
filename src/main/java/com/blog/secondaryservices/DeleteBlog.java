@@ -1,5 +1,7 @@
 package com.blog.secondaryservices;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /*
@@ -11,12 +13,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class DeleteBlog {
 	DataBase database;
 
-	public String DeleteBlogByID(int postId, JdbcTemplate jdbcTemplate) {
+	public String DeleteBlogByID(int postId, EntityManager entityManager) {
 
-		String sql = "DELETE FROM BLOG " + "WHERE POSTID='" + postId + "'";
+		String sql = "DELETE FROM BlogPojo " + "WHERE POSTID='" + postId + "'";
+		entityManager.getTransaction().begin();
+		int row=entityManager.createQuery(sql).executeUpdate(); 
+		entityManager.getTransaction().commit();
+		if(row!=0)
+			return "Success";
 
-		jdbcTemplate.execute(sql);
-
-		return "Success";
+		return "Fail";
 	}
 }

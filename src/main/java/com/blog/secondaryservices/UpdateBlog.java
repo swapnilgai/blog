@@ -1,15 +1,24 @@
 package com.blog.secondaryservices;
 
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.blog.entity.BlogPojo;
+import com.blog.entity.SignUpPojo;
 
 
 public class UpdateBlog {
 
 	public UpdateBlog() {
 		// TODO Auto-generated constructor stub
-		
+
 	}
 
 	/*
@@ -38,7 +47,7 @@ public class UpdateBlog {
 		return data;
 	}
 
-	public String UpdateBlogByID(JSONObject jObj, JdbcTemplate jdbcTemplate) {
+	public String UpdateBlogByID(JSONObject jObj, EntityManager entityManager, HttpSession session) {
 		try {
 			String data[] = parseJsonReturnBlogData(jObj);
 
@@ -46,15 +55,30 @@ public class UpdateBlog {
 
 			String date = new Date().toString();
 
-			String sql = "UPDATE BLOG " + "SET BLOGTEXT='" + data[2] + "'," + " POSTTITLE='" + data[0] + "', DATE1='"
-					+ date + "' WHERE postId='" + pId + "'";
+			SignUpPojo signUpPojoTemp = getSignUpPojo(entityManager, session);
 
-			System.out.println(sql);
-			jdbcTemplate.update(sql);
+			BlogPojo blogpojo = new BlogPojo(data[2], date, data[0], pId,
+					session.getAttribute("UserName").toString(), signUpPojoTemp);
 
+			entityManager.getTransaction().begin();
+			entityManager.merge(blogpojo);
+			entityManager.getTransaction().commit();	
+			
 		} catch (Exception e) {
 			return null;
 		}
 		return "Success";
+	}
+
+	public SignUpPojo getSignUpPojo(EntityManager entityManager, HttpSession session )
+	{
+		String sql="select s from SignUpPojo s where email='"+session.getAttribute("Email").toString()+"'";
+		TypedQuery<SignUpPojo> query =entityManager.createQuery(sql, SignUpPojo.class);
+		List<SignUpPojo> results = query.getResultList();
+
+		for(SignUpPojo signUpPojo : results)
+			return signUpPojo;
+
+		return null;		
 	}
 }

@@ -1,13 +1,15 @@
 package com.blog.secondaryservices;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpSession;
 
 public class ClearSessionForSignOut {
 
-	DataBase database= null;
 	public void ClearSession(HttpSession session)
-	{
-		
-		//database.session.remove(session);
+	{		
+		session.removeAttribute("Email");
+     	session.removeAttribute("UserName");
+     	session.invalidate();
 	}
 }

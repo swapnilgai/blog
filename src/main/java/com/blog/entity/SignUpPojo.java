@@ -1,12 +1,39 @@
 package com.blog.entity;
 
-public class SignUpPojo {
-	private String userName;
-	private String password;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="User")
+public class SignUpPojo implements Serializable {
+
+	@Id
+	@Column(nullable = false) 
 	private String email;
+	@Column(nullable = false) 
+	private String userName;
+	@Column(nullable = false) 
+	private String password;
+	@Column(nullable = false) 
 	private String bDate;
+	@Column(nullable = false) 
 	private String photoURl;
-	
+
+	@Column(nullable = false) 
+	@OneToMany(mappedBy="signUpPojo",targetEntity=BlogPojo.class, cascade=CascadeType.MERGE)
+	private List<BlogPojo> blogs;
+
 	public SignUpPojo(String userName, String password, String email, String bDate, String photoURl) {
 		// TODO Auto-generated constructor stub
 		this.userName=userName;
@@ -15,12 +42,12 @@ public class SignUpPojo {
 		this.bDate=bDate;
 		this.photoURl=photoURl;
 	}
-	
+
 	public SignUpPojo() {
 		// TODO Auto-generated constructor stub
-		}
-	
-	
+	}
+
+
 	public String getUserName() {
 		return userName;
 	}
@@ -50,5 +77,13 @@ public class SignUpPojo {
 	}
 	public void setPhotoURl(String photoURl) {
 		this.photoURl = photoURl;
+	}
+
+	public List<BlogPojo> getBlogs() {
+		return blogs;
+	}
+
+	public void setBlogs(List<BlogPojo> blogs) {
+		this.blogs = blogs;
 	}
 }

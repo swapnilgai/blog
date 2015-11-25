@@ -2,8 +2,14 @@ package com.blog.secondaryservices;
 
 import java.sql.Types;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,45 +21,27 @@ import com.blog.entity.SignUpPojo;
 public class InsertData {
 
 	DataBase database = null;
+	EntityManager entityManager;
 
 	public String insertUserProfileData(SignUpPojo signup) {
-	
+
 		return "Fail";
 	}
+	@Transactional
+	public String insertBlog(HttpSession seassion, JSONObject jObj, EntityManager entityManager) {
 
-	public String insertBlog(HttpSession seassion, JSONObject jObj, JdbcTemplate jdbcTemplate) {
-		
+		BlogPojo blogpojo = parseJsonReturnBlogData(jObj, seassion, entityManager);
 
-		System.out.println("insert json :: " + jdbcTemplate);
-		BlogPojo blogpojo = parseJsonReturnBlogData(jObj, seassion, jdbcTemplate);
-
-		String sql = "INSERT INTO BLOG " + "(blogtext ,date1 ,username, email ,"
-				+ "postTitle, postId) VALUES (?,?,?,?,?,?)";
-		Object blogtext = blogpojo.getBlogText();
+		String blogtext = blogpojo.getBlogText();
 
 		// server validation
 		if (blogtext.toString().length() <= 140) {
 
-			Object date1 = new Date().toString();
-			Object username = blogpojo.getUserName();
-			Object email = blogpojo.getEmail();
-			Object posttitile = blogpojo.getPostTitle();
-			Object postid = blogpojo.getPostId();
-
-			Object[] params = new Object[] { blogtext, date1, username, email, posttitile, postid };
-
-			System.out.println("username : " + blogpojo.getUserName());
-
-			int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
-					Types.INTEGER };
-			int row = jdbcTemplate.update(sql, params, types);
-			System.out.println(row + " row inserted.");
-            
-			if (row != 0)
-				return "Success";
-		} else
-			return "Fail";
-
+			entityManager.getTransaction().begin();
+			entityManager.merge(blogpojo);
+			entityManager.getTransaction().commit();			
+			return "Success";
+		}
 		return "Fail";
 	}
 
@@ -63,9 +51,9 @@ public class InsertData {
 	 * -in-servlet Answered by : Rakesh Soni
 	 */
 
-	public BlogPojo parseJsonReturnBlogData(JSONObject jObj, HttpSession session, JdbcTemplate jdbcTemplate) {
+	public BlogPojo parseJsonReturnBlogData(JSONObject jObj, HttpSession session, EntityManager entityManager) {
 		// TODO Auto-generated method stub
-	
+
 		java.util.Iterator it = jObj.keys(); // gets all the keys
 		String blogText = null;
 		String date = null;
@@ -86,12 +74,34 @@ public class InsertData {
 			e.printStackTrace();
 		}
 
-		String sql = "select max(postId) from blog";
-		System.out.println("jdbc temp :::: "+jdbcTemplate);
-		database.postId = jdbcTemplate.queryForInt(sql);
-		return new BlogPojo(blogText, date, postTitle, session.getAttribute("Email").toString(), ++database.postId,
-				session.getAttribute("UserName").toString());
+		String sql = "select max(postId) from BlogPojo";
+		Query q =entityManager.createQuery(sql);
+		database.postId=q.getMaxResults();
+
+		SignUpPojo signUpPojoTemp = getSignUpPojo(entityManager, session);
+
+
+		return new BlogPojo(blogText, date, postTitle, ++database.postId,
+				session.getAttribute("UserName").toString(), signUpPojoTemp);
 	}
 
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
 
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public SignUpPojo getSignUpPojo(EntityManager entityManager, HttpSession session )
+	{
+		String sql="select s from SignUpPojo s where email='"+session.getAttribute("Email").toString()+"'";
+		TypedQuery<SignUpPojo> query =entityManager.createQuery(sql, SignUpPojo.class);
+		List<SignUpPojo> results = query.getResultList();
+
+		for(SignUpPojo signUpPojo : results)
+			return signUpPojo;
+
+		return null;		
+	}
 }

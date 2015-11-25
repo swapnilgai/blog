@@ -1,6 +1,9 @@
 package com.blog.primaryservices;
 
 import java.util.Iterator;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -16,7 +19,8 @@ import com.blog.secondaryservices.InsertSignUp;
 import com.blog.secondaryservices.JsonOperations;
 public class SignUpAction implements SignUpActionDAO{
 
-	JdbcTemplate jdbcTemplate;
+	EntityManagerFactory entityManagerFactory;
+	EntityManager entityManager;
 	public SignUpPojo parseJsonToSignUp(HttpServletRequest request)
 	{
 		/*
@@ -34,12 +38,10 @@ public class SignUpAction implements SignUpActionDAO{
 		String profilePic = "imagesu.jpg";
 		
 		String key = ""+it.next();
-		  String fName = jObj.get(key).toString();
+		String fName = jObj.get(key).toString();
 		    
-	    
 		key = ""+it.next();
 		String lName = jObj.get(key).toString();
-	    
 	    
 	    key = ""+it.next();
 	    String password = jObj.get(key).toString();
@@ -69,20 +71,20 @@ public class SignUpAction implements SignUpActionDAO{
 		  HttpSession session = request.getSession();
 		  session.setAttribute("UserName", signuppojo.getUserName());
 		  session.setAttribute("Email", signuppojo.getEmail());
-		  
-		  return signup.insertSignUpPojo(request, signuppojo, jdbcTemplate);
+		  entityManager=entityManagerFactory.createEntityManager();
+		  return signup.insertSignUpPojo(request, signuppojo, entityManager);
 	  }else{
 		  return "Invalid Email";
 	  }
 	  
 	}
 
-	public JdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
+	public EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerFactory;
 	}
 
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		this.entityManagerFactory = entityManagerFactory;
 	}
 	
 }

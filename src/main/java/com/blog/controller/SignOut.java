@@ -53,11 +53,13 @@ public class SignOut extends HttpServlet {
 		ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 		SignOutActionDAO signoutaction = (SignOutActionDAO) context.getBean("SignOutActionDAO"); 
 		
-		request.getSession().invalidate();
-		response.setHeader("Cache-Control", "no-cache");
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Expires", "-1");
-		if (signoutaction.deleteSession(request) == "Success")
+		
+		if (signoutaction.deleteSession(request) == "Success"){
+			response.setHeader("Cache-Control", "no-cache");
+			response.setHeader("Pragma", "no-cache");
+			response.setHeader("Expires", "-1");
 			response.sendRedirect("/Blog/FrontEnd.jsp");
+		}
+		
 	}
 }

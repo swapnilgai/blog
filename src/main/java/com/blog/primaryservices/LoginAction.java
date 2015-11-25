@@ -1,5 +1,7 @@
 package com.blog.primaryservices;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
@@ -15,14 +17,16 @@ import com.blog.secondaryservices.ParseLoginJson;
 import com.blog.secondaryservices.ValidateUser;
 
 public class LoginAction  implements LoginActionDAO {
-	JdbcTemplate jdbcTemplate;
-	
+    EntityManager entityManager;
+    EntityManagerFactory entityManagerFactory;
 	public String validateUserAndSession(JSONObject jObj, HttpServletRequest request)
 	{
 		LoginPojo loginpojo= new ParseLoginJson().parseJsonReturnBlogData(jObj, request.getSession());
 		ValidateUser  validateuser =  new ValidateUser(); 
-		String userName = validateuser.validate(loginpojo, jdbcTemplate);
-		
+		setEntityManager();
+		System.out.println("username ::: "+loginpojo.getUserName());
+		String userName = validateuser.validate(loginpojo, entityManager);
+
 		if(userName!="Fail")
 		{
 			CheckSeasion checkSeasion = new CheckSeasion();
@@ -30,15 +34,17 @@ public class LoginAction  implements LoginActionDAO {
 		}
 		return null;
 	}
-
-	public JdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
-	}
-
-public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
 	
+	private void setEntityManager() {
+		// TODO Auto-generated method stub
+		entityManager=entityManagerFactory.createEntityManager();
+	}
 
+	public EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerFactory;
+	}
+
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		this.entityManagerFactory = entityManagerFactory;
+	}
 }
