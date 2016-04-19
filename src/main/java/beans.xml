@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
-
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd">
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
@@ -18,31 +16,39 @@
 		<property name="maxWait" value="50" />
 	</bean>
 
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
-		scope="prototype">
-		<property name="dataSource" ref="dataSource" />
+
+	<!-- Entity Manager -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="persistenceUnitName" value="Blog"></property>
+	</bean>
+
+	<!-- Transaction Manager -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 
 	<!-- BlogAction implements BlogActionDAO -->
-	<bean id="BlogActionDAO" class="com.blog.blogdata.BlogAction"
-		scope="prototype">
-		<property name="dataSource" ref="dataSource" />
+
+	<bean id="BlogActionDAO" class="com.blog.primaryservices.BlogAction"
+		scope="singleton">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 
-	<bean id="LoginActionDAO" class="com.blog.login.LoginAction"
-		scope="prototype">
-		<property name="dataSource" ref="dataSource" />
+	<bean id="LoginActionDAO" class="com.blog.primaryservices.LoginAction"
+		scope="singleton">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 
-	<bean id="SignOutActionDAO" class="com.blog.signout.SignOutAction"
-		scope="prototype">
-		<property name="dataSource" ref="dataSource" />
+	<bean id="SignOutActionDAO" class="com.blog.primaryservices.SignOutAction"
+		scope="singleton" lazy-init="true">
 	</bean>
-	
-	<bean id="SignUpActionDAO" class="com.blog.signup.SignUpAction"
-		scope="prototype">
-		<property name="dataSource" ref="dataSource" />
+
+	<bean id="SignUpActionDAO" class="com.blog.primaryservices.SignUpAction"
+		scope="singleton">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
-	
-	
+
+
 </beans>
